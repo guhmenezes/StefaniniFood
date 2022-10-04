@@ -1,0 +1,29 @@
+.info{
+    height: 57vh;
+    /* overflow: -moz-scrollbars-vertical;  */
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 425px;
+}
+
+.confirm-order{
+    background-color: white;
+    z-index: 1000;
+    width: 425px;
+    overflow-x: hidden;
+}
+
+aside{
+    z-index: 0;
+}
+
+.offcanvas{
+    /* border-top: 1px black solid; */
+    position: fixed;
+    top: 6.1rem;
+    width: 472px;
+    z-index: 99;
+    height: 85vh;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}

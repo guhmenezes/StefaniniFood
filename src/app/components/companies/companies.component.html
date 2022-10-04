@@ -1,0 +1,12 @@
+<div *ngFor="let company of companies" class="card mb-3 col" style="width: 320px;">
+    <a [routerLink]="['/cardapio', company.id]" class="row g-0">
+      <div class="col-5">
+        <img src="" class="m-3 rounded-start" alt="" style="background-color: black; width: 100px; height: 100px;">
+      </div>
+      <div class="col-7">
+        <div class="card-body">
+          <h5 class="card-title">{{company.name}}</h5>
+        </div>
+      </div>
+    </a>
+  </div>

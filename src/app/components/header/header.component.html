@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+
+    <div class="container-fluid">
+      <div class="logo">
+        <a class="navbar-brand" routerLink="/index">
+            <img src="../../../assets/images/logo.png" alt="" width="160" height="80" class="d-inline-block align-text-top">
+          </a>
+      </div>
+      <div>
+        <!-- <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button> -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item mx-4">
+              <a class="nav-link active" aria-current="page" routerLink="/index">Início</a>
+            </li>
+            <li class="nav-item mx-4">
+              <a class="nav-link" routerLink="/pedidos">Pedidos</a>
+            </li>
+        <select class="nav-item dropdown mx-4" >
+          <!-- <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+            {{endereco[0]}}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul> -->
+          <option *ngFor="let address of addresses" value="address" selected>{{address}}</option>
+          <option>Usar minha localização</option>
+        </select>
+            <li class="nav-item mx-4">
+              <a class="nav-link" (click)="toggleCart()">Sacola</a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </li> -->
+          </ul>
+      </div>
+      </div>
+    </div>
+  </nav>
+  <hr class="my-0">
+
+  <app-cart [show]="show" (closeEvent)="onClose($event)"></app-cart>

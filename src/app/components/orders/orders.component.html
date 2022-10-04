@@ -1,0 +1,33 @@
+<section>
+    <h3>Meus pedidos</h3>
+    <!-- <div class="location">lat {{lat}}</div>
+    <div class="location">long {{long}}</div> -->
+    <div>
+    <h5>Em preparação</h5>
+    <div  *ngFor="let order of activeOrders | keyvalue: desc">
+        <!-- <div *ngFor="let id of orderId"> -->
+            <h5>{{order.value[0].company}}</h5>
+            <p>Pedido Nº {{order.key}}</p>
+            <!-- </div> -->
+            <div *ngFor="let o of order.value">
+                <hr>
+                <p>{{o.qty}}x {{o.productName}}</p>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h5>Finalizados</h5>
+        <div  *ngFor="let order of completedOrders | keyvalue: desc">
+            <!-- <div *ngFor="let id of orderId"> -->
+                <h5>{{order.value[0].company}}</h5>
+                <p>Pedido Nº {{order.key}}</p>
+                <!-- </div> -->
+                <div *ngFor="let o of order.value">
+                    <hr>
+                    <p>{{o.qty}}x {{o.productName}}</p>
+                    <hr>
+                </div>
+            </div>
+        </div>
+</section>

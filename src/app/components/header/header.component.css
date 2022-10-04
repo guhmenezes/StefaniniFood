@@ -1,0 +1,8 @@
+nav{
+    max-width: 100vw;
+    z-index: 999;
+}
+
+app-cart{
+    margin-top: 100px !important;
+}

@@ -1,0 +1,69 @@
+<section class="py-1 px-1 mt-4">
+    <div class="container d-flex justify-content-center py-3 px-4">
+      
+      <form class="text-center" autocomplete="off" [formGroup]="registerForm">     
+  
+        <!-- CADASTRO PARTE 1  -->
+        <div>
+          <h1 class="h3 mb-3 fw-normal">Cadastro</h1>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" formControlName="cpf" placeholder=" ">
+            <label for="floatingInput">CPF</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" formControlName="password" placeholder=" ">
+            <label for="floatingPassword">Senha</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" formControlName="confirmPass" placeholder="name@example.com">
+            <label for="floatingInput">Confirme Senha</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" formControlName="name" placeholder="name@example.com">
+            <label for="floatingInput">Nome Completo</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" formControlName="email" placeholder="name@example.com">
+            <label for="floatingInput">E-mail</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" formControlName="phone" placeholder="name@example.com">
+            <label for="floatingInput">Celular</label>
+          </div>
+          <!-- </div> -->
+          <!-- <div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">CEP</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Logradouro</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Número</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Complemento</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Bairro</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Cidade</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">UF</label>
+          </div> -->
+        </div>
+
+        <button class="btn btn-primary" (click)="createCustomer()">Cadastrar</button>
+            
+      </form>
+    </div>
+  </section>

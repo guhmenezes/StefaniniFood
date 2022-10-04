@@ -1,0 +1,18 @@
+<!-- <div [routerLink]="['/cardapio/:id/product/',product.id]"*ngIf="product" >
+    <p>product-info works!</p>
+</div> -->
+
+<div class="card-body mx-auto text-center">
+    <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/2f4e4610-0107-4efa-b485-c2adaa565479/202206141117_M404_i.jpg" class="card-img-top" style="width: 200px;">
+    <h5 class="card-title mt-4"> {{product.name}} </h5>
+    <hr style="border-top: dashed 1px black;">
+    <p class="card-text">{{product.description}}</p>
+    <p class="card-text"> {{product.price | currency : 'BRL'}} </p>
+    <button class="btn btn-primary">Adicionar &nbsp;{{product.price  | currency: 'BRL'}}</button>
+    <div class="counter">
+        <span>-</span> 
+        <input type="text" [value] = > 
+        <span>+</span>
+    </div>
+    <!-- <div class="dish-action"><div class="dish-tooltip"><div class="dish-action__add-wrapper"><div class="dish-action__counter"><div class="marmita-counter" data-test-id="marmita-counter"><button type="button" tabindex="0" class="btn-icon btn-icon--primary btn-icon--size-m btn-icon--transparent marmita-counter__btn-decrement" aria-hidden="false" aria-label="Reduzir quantidade" disabled=""><span class="icon-marmita icon-marmita--minus-sign"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#EA1D2C" fill-rule="evenodd" d="M17.993 11c.556 0 1.007.444 1.007 1 0 .552-.45 1-1.007 1H6.007A1.001 1.001 0 0 1 5 12c0-.552.45-1 1.007-1h11.986z"></path></svg></span></button><div class="marmita-counter__value" aria-live="polite">1</div><button type="button" tabindex="0" class="btn-icon btn-icon--primary btn-icon--size-m btn-icon--transparent" aria-hidden="false" aria-label="Aumentar quantidade"><span class="icon-marmita icon-marmita--plus-sign"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#EA1D2C" fill-rule="evenodd" d="M13 11h4.993c.556 0 1.007.444 1.007 1 0 .552-.45 1-1.007 1H13v4.993C13 18.55 12.556 19 12 19c-.552 0-1-.45-1-1.007V13H6.007A1.001 1.001 0 0 1 5 12c0-.552.45-1 1.007-1H11V6.007C11 5.45 11.444 5 12 5c.552 0 1 .45 1 1.007V11z"></path></svg></span></button></div></div><button type="button" role="button" class="btn btn--default btn--size-m" aria-label="Adicionar prato" data-test-id="dish-action__add-button" theme="default" color="primary" target="" rel=""><div class="dish-action__add-button"><span>Adicionar</span><span>&nbsp;R$ 44,90</span></div></button></div></div></div> -->
+</div>
