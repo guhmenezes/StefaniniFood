@@ -1,0 +1,28 @@
+<div class="d-flex align-items-center">
+<div class="row">
+	<div class="col">
+		<div ngbDropdown class="d-inline-block">
+			<button type="button" class="px-0 btn fw-bold" id="dropdownBasic1" ngbDropdownToggle>
+				<span id="selected">Escolha um endereço</span>
+			</button>
+			<div ngbDropdownMenu aria-labelledby="dropdownBasic1" id="addresses">
+				<button *ngFor="let address of addresses" (click)="selectAddress(address, this.check)" ngbDropdownItem>
+          <div class="d-flex align-items-center">
+            <i class="fa-solid fa-house fs-5"></i>
+            <div class="row mx-1">
+              <p class="my-0 py-0 street">
+                {{address[0].toUpperCase() + address.substring(1, address.indexOf('-'))}}
+              </p>
+              <p class="my-0 py-0">
+                {{address.substring(address.indexOf('-')+1, address.indexOf('=') -3).toUpperCase()}}
+              </p>
+            </div>
+            <i class="fa-solid fa-check mb-2 d-none" #check></i>
+          </div>
+        </button>
+                <button ngbDropdownItem (click)="addAddress()" style="height: 2rem;"> <p> Informar endereço de entrega </p> </button>
+        <!-- <button ngbDropdownItem (click)="getCurrentLocation()" style="height: 2rem;"> <p> Usar minha localização (BETA)</p> </button> -->
+			</div>
+		</div>
+	</div>
+</div>

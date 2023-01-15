@@ -1,0 +1,40 @@
+.search{
+    width: 300px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: .9rem;
+    /* border: 1px solid #999; */
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    padding: 5px 10px;
+    z-index: 9999;
+  }
+
+  i{
+    font-size: 1.25rem;
+    padding: 5px;
+  }
+
+  input{
+    margin-left: 10px;
+    width: 230px;
+    background-color: transparent;
+    border: transparent;
+  }
+
+  input:focus, select:focus, btn:focus{
+    border-style: 0 none;
+    box-shadow: 0;
+    outline: 0;
+  }
+
+  .clear{
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  button{
+    background-color: transparent;
+    border: none;
+  }

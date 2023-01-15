@@ -1,0 +1,8 @@
+<form autocomplete="off" class="search d-flex justify-content-start align-items-center" #searchForm>
+  <i class="fa-solid fa-magnifying-glass primary-text-color"></i>
+  <input id="search" type="text" [placeholder]="placeholder"
+  [(ngModel)]="search" ((keyup))="active = true" name="searchBy" #searchBy>
+  <button type="reset" *ngIf="!(searchBy.value.length == 0)">
+    <i class="fa-solid fa-circle-xmark bg-light clear"></i>
+  </button>
+</form>

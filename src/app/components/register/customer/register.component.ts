@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoginService } from 'src/app/services/login.service';
 import { RegisterService } from 'src/app/services/register.service';
 
 @Component({
@@ -10,8 +11,9 @@ import { RegisterService } from 'src/app/services/register.service';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
+  step2: boolean = false;
 
-  constructor(private fb: FormBuilder, private service: RegisterService) { 
+  constructor(private fb: FormBuilder, private service: RegisterService, private loginService: LoginService) { 
     this.registerForm = this.fb.group({
       cpf: '',
       password: '',
@@ -23,6 +25,7 @@ export class RegisterComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    this.loginService.showMenuEmitter.emit(false);
   }
 
   createCustomer(){
@@ -37,6 +40,10 @@ export class RegisterComponent implements OnInit {
       }
     })
     console.log(body);
+  }
+
+  toStep2(){
+    this.step2 = true;
   }
 
 

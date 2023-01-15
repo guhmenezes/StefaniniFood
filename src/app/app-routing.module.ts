@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IndexComponent } from './components/index/index.component';
+import { CustomerLoginComponent } from './components/login/customer/customer.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { ProductInfoComponent } from './components/menu/product-info/product-info.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { RegisterComponent } from './components/register/customer/register.component';
 import { RegisterPartnerComponent } from './components/register/partner/register-partner/register-partner.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -18,16 +20,12 @@ const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path: 'parceiro',
-    component: RegisterPartnerComponent
-  },
-  {
     path: 'index',
     component: IndexComponent
   },
   {
-    path: 'pedidos',
-    component: OrdersComponent
+    path: 'entrar',
+    component: CustomerLoginComponent
   },
   {
     path: 'cardapio/:id',
@@ -36,8 +34,16 @@ const routes: Routes = [
   {
     path: 'cardapio/:id/:product',
     component: ProductInfoComponent
+  },
+  // {
+  //   path: 'parceiro',
+  //   component: RegisterPartnerComponent
+  // },
+  {
+    path: 'pedidos',
+    component: OrdersComponent, canActivate: [AuthGuard]
   }
-
+  
 ];
 
 @NgModule({

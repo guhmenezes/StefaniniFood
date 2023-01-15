@@ -2,6 +2,7 @@ import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { CustomerService } from 'src/app/services/customer.service';
 import { LocalService } from 'src/app/services/local.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-orders',
@@ -9,49 +10,57 @@ import { LocalService } from 'src/app/services/local.service';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
-
+  
   orders: Map<String,any> = new Map();
+  filteredOrders: Map<String,any> = new Map();
   activeOrders: Map<String,any> = new Map();
   completedOrders: Map<String,any> = new Map();
+  active:boolean = false;
+  completed:boolean = false;
+  filter?: boolean
+  empty?: boolean
   // long:number = 0;
   // lat:number = 0;
-
-  constructor(private service: CustomerService) { }
-
+  
+  constructor(private service: CustomerService, private loginService: LoginService) { }
+  
   ngOnInit(): void {
     // this.getCurrentLocation()
     this.getOrders()
+    this.filteredOrders = this.orders
+    console.log(this.activeOrders.has('740'))
+
     // this.locali()
   }
-
+  
   // locali(){
-  //   console.log(this.local.getAddress())
+    //   console.log(this.local.getAddress())
   //   // console.log(this.local.local)
   //   // this.local.getAddress().subscribe({
-  //   //   next: response => {
-  //   //     console.log(response.toString())
-  //   //   },
-  //   //   error: err => {
-  //   //     console.log(err)
-  //   //   }
-  //   // });
-  // }
-
-  
-  // getCurrentLocation() {
-  //   if (navigator.geolocation) {
-  //    navigator.geolocation.getCurrentPosition(position => {
-  //     this.lat = position.coords.latitude;
+    //   //   next: response => {
+      //   //     console.log(response.toString())
+      //   //   },
+      //   //   error: err => {
+        //   //     console.log(err)
+        //   //   }
+        //   // });
+        // }
+        
+        
+        // getCurrentLocation() {
+          //   if (navigator.geolocation) {
+            //    navigator.geolocation.getCurrentPosition(position => {
+              //     this.lat = position.coords.latitude;
   //     this.long = position.coords.longitude;
   //    });
   //   }
   //  else {
-  //   alert("Geolocation is not supported by this browser.");
-  //   }
-  //  }
-
+    //   alert("Geolocation is not supported by this browser.");
+    //   }
+    //  }
+    
   getOrders(){
-    this.service.getOrders(localStorage.getItem('customerId')!).subscribe({
+    this.service.getOrders(localStorage.getItem('userId')!).subscribe({
       next: response => {
         console.log(response)
         Object.entries(response).forEach(([id, order]) => {
@@ -65,13 +74,20 @@ export class OrdersComponent implements OnInit {
           if(v[0].orderStatus == 'FINALIZADO'){
             this.completedOrders.set(k,v)
             console.log(this.completedOrders)
+            // this.completed = true
           } else if(v[0].orderStatus == 'EM_PREPARACAO'){
             this.activeOrders.set(k,v)
             console.log(this.activeOrders)
+            this.active = true;
           } else {
             console.log('Erro')
           }
         })
+
+        if(this.orders.size == 0){
+          this.empty = true
+        }
+        this.hideloader()
         // console.log(this.orders)
         // Object.keys(response).forEach(k => {
         //   console.log(k)
@@ -92,6 +108,9 @@ export class OrdersComponent implements OnInit {
       },
       error: err => {
         console.log(err)
+        if(err.status == 403){
+          this.loginService.logout()
+        }
       }
     });
     // this.orders.forEach(o => {
@@ -107,6 +126,24 @@ export class OrdersComponent implements OnInit {
     //   }
     //   console.log(this.orders)
     // }
+  }
+
+  showCompleted(){
+    this.active = false;
+    document.getElementById("completed")?.classList.add('active');
+    document.getElementById("active")?.classList.remove('active');
+    this.completed = true;
+  }
+
+  showActive(){
+    this.completed = false;
+    document.getElementById("active")?.classList.add('active');
+    document.getElementById("completed")?.classList.remove('active');
+    this.active = true;
+  }
+
+  setImg(id:string){
+    return '../../../assets/images/companies/' + id + '.jpg'
   }
 
   separe(item:any){
@@ -142,4 +179,31 @@ export class OrdersComponent implements OnInit {
   desc = (a: KeyValue<String,any>, b: KeyValue<String,any>): number => {
     return a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
   }
+
+  filterOrders(evt: any){
+    // setTimeout(() => {
+      console.log(evt)
+      this.empty = false
+      this.filter = true
+      this.filteredOrders = evt.orders;
+    // },300)
+    if (this.filteredOrders.size){
+    // else this.empty = false
+  } else {
+    this.empty = true
+    if (evt.filterBy == '' || evt.filterBy == null){
+      this.filter = false;
+      this.empty = false;
+      // this.filteredOrders = new Map()
+      document.querySelector<HTMLInputElement>('#search')!.value = ''
+    // } else {
+    //   (this.filteredOrders.size == 0)
+    //   this.empty = true;
+    }
+    }
+  }
+
+  hideloader() {
+    document.getElementById('loading')!.style.display = 'none';
+}
 }

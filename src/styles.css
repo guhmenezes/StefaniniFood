@@ -1,9 +1,50 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root{
+    --primary-bg-color: rgb(12, 12, 49) !important;
+    --primary-text-color: rgb(30,30,30) !important;
+    --secondary-text-color: rgb(240, 240, 240);
+    --font-size: 0.8rem;
+}
+
 html{
     overflow-x: hidden;
 }
 
 body{
     min-height: 100vh !important;
+}
+
+body::-webkit-scrollbar {
+    width: 10px;               /* width of the entire scrollbar */
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: transparent;        /* color of the tracking area */
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: var(--primary-bg-color);    /* color of the scroll thumb */
+    border-radius: 10px;       /* roundness of the scroll thumb */
+    border: 2px solid var(--secondary-text-color);  /* creates padding around scroll thumb */
+  }
+
+.container-fluid{
+    max-width: 99% !important;
+}
+
+.primary-color{
+    background-color: var(--primary-bg-color) !important;
+    color: var(--secondary-text-color) !important;
+}
+
+.primary-text-color{
+    color: var(--primary-bg-color);
+}
+
+app-search{
+    position: fixed;
+    z-index: 999;
+    top: 1.7rem;
+    left: 37%;
 }

@@ -27,3 +27,53 @@ aside{
     overflow-y: hidden;
     overflow-x: hidden;
 }
+
+.offcanvas-backdrop{
+    background-color: transparent !important;
+}
+
+form{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+form input{
+    height: 3rem;
+    border-radius: 3px;
+    border: var(--bs-border-color-translucent) solid 1px;
+}
+
+form input:focus{
+    border-style: 0 none !important;
+    box-shadow: 0 0 !important;
+    outline: 0 !important;
+}
+
+h5{
+    color: rgba(0, 0, 0, 0.8);
+}
+
+a{
+    text-decoration: none;
+    color: var(--primary-bg-color);
+    font-weight: 500;
+}
+
+button{
+    background-color: transparent;
+    border: none;
+    color: var(--primary-bg-color);
+}
+
+.coupon{
+    height: 50px;
+}
+
+.img{
+    margin-right: 10px;
+}
+
+.removeCoupon{
+    margin-left: 8px;
+}

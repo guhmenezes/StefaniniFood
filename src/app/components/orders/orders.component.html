@@ -1,33 +1,92 @@
-<section>
-    <h3>Meus pedidos</h3>
-    <!-- <div class="location">lat {{lat}}</div>
-    <div class="location">long {{long}}</div> -->
-    <div>
-    <h5>Em preparação</h5>
-    <div  *ngFor="let order of activeOrders | keyvalue: desc">
-        <!-- <div *ngFor="let id of orderId"> -->
-            <h5>{{order.value[0].company}}</h5>
-            <p>Pedido Nº {{order.key}}</p>
-            <!-- </div> -->
-            <div *ngFor="let o of order.value">
-                <hr>
-                <p>{{o.qty}}x {{o.productName}}</p>
-                <hr>
-            </div>
-        </div>
-    </div>
-    <div>
-        <h5>Finalizados</h5>
-        <div  *ngFor="let order of completedOrders | keyvalue: desc">
-            <!-- <div *ngFor="let id of orderId"> -->
-                <h5>{{order.value[0].company}}</h5>
-                <p>Pedido Nº {{order.key}}</p>
-                <!-- </div> -->
-                <div *ngFor="let o of order.value">
+<app-search [orders]="orders" placeholder="Buscar pedido" (filteredOrders)="filterOrders($event)"></app-search>
+<div class="spinner-border text-secondary"  id="loading" style="width: 3rem; height: 3rem;" role="status">
+    <span class="sr-only"></span>
+  </div>
+<section class="py-4 px-5">
+    <h3 class="my-3">Meus pedidos</h3>
+    <nav class="navbar navbar-expand-lg navbar-light py-3" *ngIf="activeOrders.size > 0 && completedOrders.size > 0 && !filter else history">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+            <li>
+              <h5 class="nav-link active" id="active" (click)="showActive()">Em preparação</h5>
+            </li>
+            <li class="nav-item">
+              <h5 class="nav-link" id="completed" (click)="showCompleted()">Finalizados</h5>
+            </li>
+        </ul>
+    </nav>
+    <ng-template #history>
+        <h5 class="px-2 py-3 mb-5" *ngIf="!filter">Histórico</h5>
+        <h5 class="px-2 py-3 mb-5" *ngIf="filter">Resultado da busca</h5>
+        <div class="row gx-5 mt-3" *ngIf="filter">
+            <div  *ngFor="let order of filteredOrders | keyvalue: desc" class="col-6 px-5 mb-5 order">
+                <div class="d-flex">
+                    <div>
+                        <img [src]="setImg(order.value[0].companyId)" class="card-img-top" style="width: 67px; height: 50px;">
+                    </div>
+                    <div class="mx-3">
+                        <h6>{{order.value[0].company}}</h6>
+                        <p>Pedido <span *ngIf="(this.activeOrders.has(order.key))">em preparação</span> <span *ngIf="!(this.activeOrders.has(order.key))">concluído</span> Nº {{order.key}}</p>
+                    </div>
+                </div>
+                <div class="ordered-items">
                     <hr>
-                    <p>{{o.qty}}x {{o.productName}}</p>
+                    <div *ngFor="let o of order.value">
+                        <p>{{o.qty}}x {{o.productName}}</p>
+                    </div>
                     <hr>
                 </div>
             </div>
+        </div>
+        <div *ngIf="filter && empty" class="text-center">
+            <h5>Nenhum resultado encontrado</h5>
+            <p>Edite ou <u (click)="filterOrders({filterBy: '', orders: ''})">limpe os filtros</u> para voltar</p>
+        </div>
+    </ng-template>
+        <div class="row gx-5 mt-3" *ngIf="active && !filter">
+            <div  *ngFor="let order of activeOrders | keyvalue: desc" class="col-6 px-5 mb-5 order">
+                <div class="d-flex">
+                    <div>
+                        <img [src]="setImg(order.value[0].companyId)" class="card-img-top" style="width: 67px; height: 50px;">
+                    </div>
+                    <div class="mx-3">
+                        <h6>{{order.value[0].company}}</h6>
+                        <p>Pedido <span *ngIf="!(activeOrders.size > 0 && completedOrders.size > 0)">em preparação</span> Nº {{order.key}}</p>
+                    </div>
+                </div>
+                <div class="ordered-items">
+                    <hr>
+                    <div *ngFor="let o of order.value">
+                        <p>{{o.qty}}x {{o.productName}}</p>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+<div class="row g-5 py-3" *ngIf="completed && !filter">
+        <!-- <h5 class="mx-5">Finalizados</h5> -->
+        <div  *ngFor="let order of completedOrders | keyvalue: desc" class="col-6 px-5">
+            <!-- <div *ngFor="let id of orderId"> -->
+                <div class="d-flex">
+                    <div>
+                        <img [src]="setImg(order.value[0].companyId)" class="card-img-top" style="width: 67px; height: 50px;">
+                    </div>
+                    <div class="mx-3">
+                        <h6>{{order.value[0].company}}</h6>
+                        <p>Pedido <span *ngIf="!(activeOrders.size > 0 && completedOrders.size > 0)">concluído</span> Nº {{order.key}}</p>
+                    </div>
+                </div>
+                <div class="ordered-items">
+                    <div *ngFor="let o of order.value">
+                        <hr>
+                        <p>{{o.qty}}x {{o.productName}}</p>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-5" *ngIf="empty">
+            <h5 class="text-center">Ah, não!</h5>
+            <h5 class="text-center">Você ainda não fez nenhum pedido</h5>
+            <a class="d-flex justify-content-center" routerLink="/index">Que tal pedir agora? Ver lojas</a>
         </div>
 </section>

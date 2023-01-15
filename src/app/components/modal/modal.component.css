@@ -1,0 +1,20 @@
+.buy{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default !important;
+}
+
+.buy:focus, .buy:active{
+    border-style: 0 none !important;
+    border-color: transparent;
+    box-shadow: 0 0 !important;
+    outline: 0 !important;
+}
+
+.counter{
+    border-radius: 5px;
+}

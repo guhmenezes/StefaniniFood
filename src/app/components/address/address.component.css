@@ -1,0 +1,41 @@
+select, option{
+    padding-right: 5px;
+    border: none !important;
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.55) !important;
+    /* font-size: var(--font-size);
+    font-family: 'Quicksand', sans-serif; */
+}
+
+.btn:focus{
+    border-style: 0 none !important;
+    border-color: transparent;
+    box-shadow: 0 0 !important;
+    outline: 0 !important;
+}
+
+.btn{
+    font-size: var(--font-size);
+    color: rgba(0, 0, 0, 0.55) !important;
+    font-family: 'Quicksand', sans-serif;
+    width: 250px;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+
+.fa-check{
+    color: var(--primary-bg-color) !important;
+}
+
+#selected{
+    width: 20px !important;
+
+}
+
+i{
+    color: rgba(0, 0, 0, 0.7) !important;
+}
+
+p{
+    font-size: 10pt;
+}

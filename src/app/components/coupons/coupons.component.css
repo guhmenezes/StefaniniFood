@@ -1,0 +1,54 @@
+.code{
+    /* width: 220px; */
+    height: 40px;
+    width: 230px;
+    border: 1px rgba(0,0,0, 0.4) dashed;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    position: relative;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgba(0,0,0, .8);
+}
+
+.fa-copy{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 24px;
+    color: rgba(0,0,0, 0.6)
+}
+
+.fa-ticket-simple{
+    font-size: 200pt;
+    height: 266px;
+    margin-top: -2rem;
+    text-align: center;
+    margin-left: 10px;
+    z-index: 0;
+    color: white;
+    /* -webkit-text-stroke-width: .2px;
+    -webkit-text-stroke-color: #000; */
+    text-shadow: 1px 1px 5px rgba(0,0,0, 0.4);
+}
+
+.coupon{
+    font-size: var(--font-size);
+    z-index: 1;
+    width: 250px;
+    text-align: center;
+}
+
+.coupon-footer{
+    font-size: 10.5px;
+
+}
+
+.title, .img{
+    font-size: 1rem;
+    height: 3.5rem;
+}
+
+section{
+    margin-top: -3rem !important;
+}

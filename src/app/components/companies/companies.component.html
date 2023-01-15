@@ -1,12 +1,62 @@
-<div *ngFor="let company of companies" class="card mb-3 col" style="width: 320px;">
-    <a [routerLink]="['/cardapio', company.id]" class="row g-0">
-      <div class="col-5">
-        <img src="" class="m-3 rounded-start" alt="" style="background-color: black; width: 100px; height: 100px;">
-      </div>
-      <div class="col-7">
-        <div class="card-body">
-          <h5 class="card-title">{{company.name}}</h5>
+<app-search [companies]="companies" placeholder="Busque por loja" (filteredCompanies)="filterCompanies($event)"></app-search>
+<div class="spinner-border text-secondary"  id="loading" style="width: 3rem; height: 3rem;" role="status">
+  <span class="sr-only"></span>
+</div>
+<section class="d-flex justify-content-center mt-5 mx-5" *ngIf="!empty; else notFound">
+  <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="width: 90vw;">
+    <h4 class="mx-4 position-absolute">Lojas</h4>
+    <div class="carousel-inner">
+      <div class="carousel-item active d-flex flex-nowrap" id="slider">
+        <div *ngFor="let company of filteredCompanies" class="card my-5 mx-4 col-12"  style="width: 320px;">
+          <a [routerLink]="['/cardapio', company.id]" class="row g-1">
+            <div class="col-5">
+              <img [src]="setImg(company.id!.toString())" class="m-3 logo rounded-start" alt="" style="background-color: black; width: 100px; height: 100px;">
+            </div>
+            <div class="col-7 d-flex justify-content-center align-items-center">
+              <div class="card-body mt-1">
+                <h5 class="card-title">{{company.name}}</h5>
+                <p class="text-success"><i class="fa-solid fa-motorcycle text-muted"></i>&nbsp; GRÁTIS</p>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
-    </a>
+      <span *ngIf="prevButton" class="carousel-control-prev">
+        <span class="prev bg-light text-dark" aria-hidden="true" (click)="prev()"> < </span>
+        <span class="sr-only">Previous</span>
+      </span>
+      <span *ngIf="nextButton" class="carousel-control-next">
+        <span class="next bg-light text-dark" (click)="next()"> > </span>
+        <span class="sr-only">Next</span>
+      </span>
+      </div>
   </div>
+  <!-- <div *ngFor="let company of companies" class="card mb-3 col" style="width: 320px;">
+    <a [routerLink]="['/cardapio', company.id]" class="row g-0">
+        <div class="col-5">
+          <img [src]="setImg(company.id)" class="m-3 logo rounded-start" alt="" style="background-color: black; width: 100px; height: 100px;">
+        </div>
+        <div class="col-7">
+          <div class="card-body">
+            <h5 class="card-title">{{company.name}}</h5>
+            <p class="text-success"><i class="fa-solid fa-motorcycle text-muted"></i>&nbsp; GRÁTIS</p>
+          </div>
+        </div>
+      </a>
+    </div> -->
+</section>
+      <ng-template #notFound>
+        <section class=" d-flex justify-content-center align-items-center my-4">
+          <div class="col-3 mx-4">          
+            <img loading="lazy" src="https://static-images.ifood.com.br/image/upload/t_high/discoveries/001-search-empty-state.png" 
+            alt="Nenhum resultado encontrado" class="notFoundImg" crossorigin="anonymous">
+          </div>
+          <div class="col-3 align-items-center text-center">
+            <h5>Nenhum resultado encontrado</h5>
+            <p>Edite ou limpe os filtros para voltar</p>
+              <span class="primary-text-color fw-bold" (click)="filterCompanies({filterBy: '', companies: []})">Limpar filtros</span>
+          </div>
+        </section>
+      </ng-template>
+
+<app-coupons></app-coupons>

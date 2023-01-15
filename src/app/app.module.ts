@@ -10,7 +10,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { RegisterComponent } from './components/register/customer/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegisterPartnerComponent } from './components/register/partner/register-partner/register-partner.component';
 import { IndexComponent } from './components/index/index.component';
 import { CompaniesComponent } from './components/companies/companies.component';
@@ -20,6 +20,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent, ModalContent } from './components/modal/modal.component';
 import { CartComponent } from './components/cart/cart.component';
 import { OrdersComponent } from './components/orders/orders.component';
+import { SearchComponent } from './components/search/search.component';
+import { AddressComponent } from './components/address/address.component';
+import { FormContent, InfoComponent, InfoContent } from './components/address/info/info.component';
+import { CouponsComponent } from './components/coupons/coupons.component';
+// import { UpdateContent } from './components/cart/update/update.component';
+import { CustomerLoginComponent } from './components/login/customer/customer.component';
+import { AuthInterceptor } from './guard/auth.interceptor';
+import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component'
 
 registerLocaleData(localePt, 'pt');
 
@@ -37,7 +46,17 @@ registerLocaleData(localePt, 'pt');
     ModalComponent,
     ModalContent,
     CartComponent,
-    OrdersComponent
+    OrdersComponent,
+    SearchComponent,
+    AddressComponent,
+    InfoComponent,
+    CouponsComponent,
+    // UpdateContent,
+    FormContent,
+    InfoContent,
+    CustomerLoginComponent,
+    AlertModalComponent,
+    ConfirmModalComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +68,15 @@ registerLocaleData(localePt, 'pt');
     NgbModule
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'pt' },
+    { 
+      provide: LOCALE_ID, 
+      useValue: 'pt' 
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

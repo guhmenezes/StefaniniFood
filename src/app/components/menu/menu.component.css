@@ -1,3 +1,47 @@
 .card{
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+section{
+    width: 1160px;
+    min-height: 50vh;
+    margin-left: 6vw !important;
+  
+}
+
+.pulse:hover {
+    animation: pulse 0.7s infinite;
+    margin: 0 auto;
+    display: table;
+    animation-direction: alternate;
+    -webkit-animation-name: pulse;
+    animation-name: pulse;
+  }
+  
+  
+  @-webkit-keyframes pulse {
+    0% {
+    -webkit-transform: scale(1);
+    -webkit-filter: brightness(110%);
+    }
+    100% {
+    -webkit-transform: scale(1.01);
+    -webkit-filter: brightness(110%);
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+    transform: scale(1);
+    filter: brightness(110%);
+    }
+    100% {
+    transform: scale(1.01);
+    filter: brightness(110%);
+    }
+  }
+
+  .notFoundImg{
+    height: 300px;
+    width: 300px;
+}
