@@ -1,5 +1,6 @@
 import { formatCurrency } from '@angular/common';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { ActivatedRoute, Router, RouterStateSnapshot } from '@angular/router';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { Product } from 'src/app/models/product';
 import { LoginService } from 'src/app/services/login.service';
@@ -65,7 +66,7 @@ export class ModalContent {
   products: object[] | any = []
   modalsNumber: number = 1;
 
-  constructor(public activeModal: NgbActiveModal, private modalService: NgbModal, private service: OrderService, private loginService: LoginService) {}
+  constructor(public activeModal: NgbActiveModal, private modalService: NgbModal, private service: OrderService, private loginService: LoginService, private actRouter: Router) {}
   
   ngOnInit(){
     this.total = formatCurrency(this.product!.price * this.qty, 'pt', 'R$');
@@ -150,6 +151,8 @@ export class ModalContent {
           } else {
             this.products.push(body)
           }
+          // this.actRouter.navigate([this.actRouter.routerState.snapshot.url])
+          // this.activeModal.close()
           window.location.reload()
         } else {
           const modalRef = this.modalService.open(ConfirmModalComponent)
