@@ -13,7 +13,7 @@ export class CustomerLoginComponent implements OnInit {
 
   user = new User();
 
-  constructor(private service: LoginService, private router: Router) { }
+  constructor(private service: LoginService, protected router: Router) { }
 
   ngOnInit(): void {
     if(this.service.isAuth()) this.router.navigate(['/'])
@@ -28,7 +28,7 @@ export class CustomerLoginComponent implements OnInit {
         this.service.isAuth
         console.log(response)
         this.service.showMenuEmitter.emit(true);
-        window.location.pathname = '';
+        this.router.navigate([''])
       },
       error: () => {
         alert('Usuário e/ou senha inválidos !')
@@ -37,6 +37,6 @@ export class CustomerLoginComponent implements OnInit {
   }
 
   register(){
-    window.location.pathname = 'cadastro'
+    this.router.navigate(['cadastro'])
   }
 }

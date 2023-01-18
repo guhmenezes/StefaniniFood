@@ -1,14 +1,17 @@
 <main>
     <div class="login d-flex align-items-center justify-content-center row">
-        <div class="title mt-5">
+        <div>
+            <i class="fa-solid fa-xmark fs-2 position-absolute" (click)="this.router.navigate([''])"></i>
+        </div>
+        <div class="title mt-5 pt-4">
             <h1 class="h2 text-center">
                 Falta pouco para matar sua fome!
             </h1>
-                <h5 class="mt-4 py-2 text-center">
+                <!-- <h5 class="mt-4 py-2 text-center">
                     Como deseja continuar?
-                </h5>
+                </h5> -->
         </div>
-        <div class="body d-flex justify-content-center mb-5 my-2">
+        <div class="body d-flex justify-content-center mb-5">
             <form class="mx-4" #loginForm ="ngForm" (ngSubmit)="login(loginForm.value)">
               <div class="form-floating my-3">
                 <input type="text" class="form-control px-4" [(ngModel)]="user.username" name="street" placeholder=" ">

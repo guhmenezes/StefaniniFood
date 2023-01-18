@@ -47,3 +47,8 @@ h5{
     transition: .5s;
     font-size: 1.2rem;
 }
+
+.fa-xmark{
+    top: 1rem;
+    right: 2rem;
+}

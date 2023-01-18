@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
   logged = false
   showNav: boolean = true;
   
-  constructor(private service: CustomerService, private loginService: LoginService) { }
+  constructor(private service: CustomerService, private loginService: LoginService, private router: Router) { }
 
   ngOnInit(): void {
     if (localStorage.getItem('token')){
@@ -124,7 +124,7 @@ export class HeaderComponent implements OnInit {
   }
 
   login(){
-    window.location.pathname = '/entrar'
+    this.router.navigate(['/entrar'])
   }
 
   logout(){
