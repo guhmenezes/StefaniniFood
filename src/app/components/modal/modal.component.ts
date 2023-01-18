@@ -1,10 +1,9 @@
-import { CurrencyPipe, formatCurrency } from '@angular/common';
+import { formatCurrency } from '@angular/common';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { Product } from 'src/app/models/product';
 import { LoginService } from 'src/app/services/login.service';
 import { OrderService } from 'src/app/services/order.service';
-import { CartComponent } from '../cart/cart.component';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 
 @Component({
@@ -90,7 +89,7 @@ export class ModalContent {
     this.total = formatCurrency(this.product!.price * this.qty, 'pt', 'R$');
   }
 
-  onCart(){
+  async onCart(){
     console.log(this.qty, this.product!.id)
     let body = {
         "consumerId": localStorage.getItem('userId'),
@@ -98,26 +97,26 @@ export class ModalContent {
         "qty": this.qty
     }
     this.service.addProduct(body).subscribe({
+      next: () => window.location.reload()
+      ,
       error: err => {
         console.log(err)
         if(err.status == 422){
           const modalRef = this.modalService.open(ConfirmModalComponent)
           modalRef.componentInstance.title = 'Ops'
-          modalRef.componentInstance.msg = 'Você possui alguns produtos da loja ' + this.product!.company + ' no carrinho. Deseja removê-los?'
+          modalRef.componentInstance.msg = 'Você possui alguns produtos da loja ' + localStorage.getItem('companyCart') + ' no carrinho. Deseja removê-los?'
           modalRef.componentInstance.okBtn = 'Sim'
           modalRef.componentInstance.cancelBtn = 'Não'
           modalRef.result.then(() => {
             this.service.clearCart(body.consumerId!).subscribe({
-              next: () => this.onCart()
+              next: () => {
+                this.onCart().then(() => window.location.reload())
+              }
             })
           })
         }
       }
-    }).add(window.location.reload())
-    // this.activeModal.close()
-
-    // this.openEvent.emit(true)
-    // CartComponent.call(new CartComponent, this.service)
+    })
   }
 
   onLocalStorage(){
@@ -196,9 +195,4 @@ export class ModalComponent {
     modalRef.componentInstance.name = '';
   }
 
-  // public onReload(evt:boolean|Event){
-  //   let cart = new CartComponent(this.service)
-  //   cart.ngOnInit()
-  //   cart.show = 'show'
-  // }
 }

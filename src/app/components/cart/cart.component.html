@@ -25,13 +25,13 @@
                       </table>
                   </div>
                   <div class="coupon mx-auto py-2" id="offcanvasCoupon" *ngIf="userLogged">
-                    <form #coupon="ngForm" class="row g-0" (ngSubmit)="addCoupon(this.coupon)" *ngIf="!couponDiscount else couponApplied">
+                    <form #coupon="ngForm" class="row g-0" (ngSubmit)="addCoupon(this.coupon)" *ngIf="!couponDiscount && !invalidCoupon else couponApplied">
                         <!-- <label for="coupon" class="col-6">Cupom de Desconto</label> -->
                         <input type="text" class="col-7 px-3" placeholder="Código de cupom" name="code" ngModel>
                         <button class="primary-text-color col-5">Adicionar</button>
                     </form>   
                     <ng-template #couponApplied>
-                        <div class="coupon d-flex justify-content-center align-items-center my-3 py-2">
+                        <div *ngIf="!invalidCoupon" class="coupon d-flex justify-content-center align-items-center my-3 py-2">
                             <div class="img">
                                 <span class="icon-marmita icon-marmita--voucher voucher-card__icon">
                                     <svg width="35" height="35" viewBox="0 0 114 114" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="dash-icon-voucher" fill-rule="evenodd" clip-rule="evenodd" d="M92.6425 71.5072C92.9052 70.3253 94.0763 69.5801 95.2582 69.8427L106.984 72.4484C108.166 72.7111 108.911 73.8822 108.648 75.0641C108.386 76.2461 107.215 76.9913 106.033 76.7286L94.307 74.1229C93.1251 73.8603 92.3799 72.6892 92.6425 71.5072Z" fill="#FF9595"></path>
@@ -55,6 +55,8 @@
                                 <span class="removeCoupon" (click)="removeCoupon()">X</span>
                             </div>
                         </div>
+                        <span *ngIf="invalidCoupon" class="mx-5 my-5 text-danger invalid">{{invalidMessage}}</span>
+                        
                     </ng-template>             
                   </div>
                   <div class="total row mx-3 mt-4" id="offcanvasTotal">
@@ -81,7 +83,12 @@
                 </div>
                 <button *ngIf="!userLogged" class="btn primary-color btn-lg mx-auto w-100" (click)="login()"> Faça login para concluir pedido </button>
                 <button *ngIf="userLogged && !hasAddress" class="btn primary-color btn-lg mx-auto w-100" (click)="addAddress()"> Informar endereço de entrega </button>
-                <button *ngIf="userLogged && hasAddress" class="btn primary-color btn-lg mx-auto w-100" (click)="confirmOrder()"> Confirmar pedido </button>
+                <button *ngIf="userLogged && hasAddress" class="btn primary-color btn-lg mx-auto w-100" (click)="confirmOrder()"> 
+                    <div class="spinner-grow text-light d-none"></div>
+                    <div class="spinner-grow text-light d-none"></div>
+                    <div class="spinner-grow text-light d-none"></div>
+                    <div class="confirm">Confirmar pedido</div> 
+                </button>
             </div>
         </div>
       </div>

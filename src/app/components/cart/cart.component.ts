@@ -7,7 +7,6 @@ import { LoginService } from 'src/app/services/login.service';
 import { OrderService } from 'src/app/services/order.service';
 import { FormContent } from '../address/info/info.component';
 import { ModalContent } from '../modal/modal.component';
-// import { UpdateContent } from './update/update.component';
 
 @Component({
   selector: 'app-cart',
@@ -22,6 +21,7 @@ export class CartComponent implements OnInit {
   companyId: string = '';
   product?: Product
   cart: any[] = [];
+  responseCart: any[] = []
   @Input()
   show: string = '';
   @Output()
@@ -29,11 +29,15 @@ export class CartComponent implements OnInit {
   total: number = 0;
   deliveryFee: number | string = 0;
   couponDiscount: number = 0;
+  usedCoupon = ''
+  invalidCoupon?: boolean
+  invalidMessage = 'Cupom inválido !'
   empty = true;
   errTemplate: boolean = false;
   hasAddress?: boolean
   msg = `Seu carrinho está vazio`
   code!: string;
+  unifiedProducts: boolean = false;
 
   constructor(private service: OrderService, private loginService: LoginService, private modalService: NgbModal) { }
   
@@ -43,27 +47,18 @@ export class CartComponent implements OnInit {
       const localCart = JSON.parse(localStorage.getItem('cart')!)
       console.log(localCart.length)
       this.toDatabase(localCart)
-    }
+    } else 
+    this.retrieveProductsOnCart()
     this.hasAddress = localStorage.getItem('hasAddress')? true : false
     console.log(this.hasAddress)
-    // this.hasAddress = true
-    this.retrieveProductsOnCart()
     setTimeout(() => {
-      // document.querySelector('div.offcanvas-backdrop.fade.show')?.remove()
-      // document.querySelector<HTMLElement>('.offcanvas-backdrop')!.style.backgroundColor = 'transparent'
       if (!this.empty) {
         this.closeEvent.emit({ 'show': 'show', 'total': this.total + +this.deliveryFee - this.couponDiscount })
       }
     }, 1000)
     console.log(this.cart)
-    // console.log(localStorage.getItem('cart'))
-    
-
-    // if (this.show === 'show'){
-    //   document.getElementsByTagName('html')[0].style.overflowY = 'hidden'
-    // }
   }
-
+  
   toDatabase(cart: string[] | any){
     console.log(cart)
     const body:any[] = []
@@ -78,23 +73,11 @@ export class CartComponent implements OnInit {
     console.log(body)
     this.service.clearCart(localStorage.getItem('userId')!).subscribe()
     this.service.addToDatabase(body).subscribe({
-      
+      next: ()=> {
+        localStorage.removeItem('cart')
+        this.retrieveProductsOnCart()
+      }
     })
-    // cart.forEach((p:any) => {
-    //   let body = {
-    //     "consumerId": localStorage.getItem('userId'),
-    //     "productId": p.id,
-    //     "qty": p.qty
-    // }
-    // console.log(body)
-    //   this.service.addProduct(body).subscribe({
-    //     next: response => {
-    //       console.log(response)
-    //       this.retrieveProductsOnCart()
-    //       localStorage.removeItem('cart')
-    //     }
-    //   })
-    // })
   }
 
   retrieveProductsOnCart(show?: boolean) {
@@ -103,18 +86,43 @@ export class CartComponent implements OnInit {
         next: response => {
           this.userLogged = true
           this.empty = false
+          this.responseCart = response
           if (this.cart.length > 0) {
             this.cart = []
           }
-          Object.values(response).forEach(p => {
+          Object.values(response).forEach((p:any) => {
+            console.log(p)
             this.cart.push(p)
             this.sumItems()
+            //   var repeated = this.cart.findIndex(c => {
+              //     return c.productId == p.productId;
+              // }) > -1;
+              //   if(repeated && p.qty == 1){
+          //     let uniqueArray: any[] = []
+          //   this.cart.forEach(i => {
+            //     var duplicated  = uniqueArray.findIndex(ui => {
+              //         return i.productId == ui.productId;
+              //     }) > -1;
+              
+              //     if(!duplicated) {
+            //         uniqueArray.push(i);
+            //     }
+            // });
+            // uniqueArray.forEach(i => {
+            //   if(i.qty == 1)
+            //   i.qty = this.cart.filter(c => c.productId == i.productId).length
+            // })
+            // this.cart = uniqueArray
+            // this.unifiedProducts = true
+            // }
           });
+        
           if(show) this.closeEvent.emit({ 'show': 'show', 'total': this.total + +this.deliveryFee - this.couponDiscount })
           else this.closeEvent.emit({ 'show': '', 'total': this.total + +this.deliveryFee - this.couponDiscount })
           console.log(response)
           this.company = this.cart[0].company
           this.companyId = this.cart[0].companyId
+          localStorage.setItem('companyCart', this.cart[0].company)
         },
         error: () => {
           this.cart = []
@@ -136,7 +144,6 @@ export class CartComponent implements OnInit {
           this.company = this.cart[0].company
           this.companyId = this.cart[0].companyId
         }
-        // this.closeEvent.emit({ 'show': '', 'total': this.total + +this.deliveryFee - this.couponDiscount })
       }
     }
   }
@@ -166,24 +173,9 @@ export class CartComponent implements OnInit {
             modalRef.componentInstance.itemId = itemId
             modalRef.componentInstance.company = company;
             this.retrieveProductsOnCart()
-            // modalRef.componentInstance.total = 
           }, 100)
-          // this.product = new Product();
-          // this.product.company
-          // console.log(this.product) 
         }
       })
-      // this.service.getMenu(this.companyId).subscribe({
-        //   next: response => {
-          //     let menu: Product[] = [];
-          //     menu.push(response);
-          //     this.product = menu.find(p => p.id === id)
-          //     console.log(this.product)
-          //   }
-          // })
-          // console.log(this.menu)
-          // this.product = this.menu.find(p => p.id === id)
-          // console.log(this.product)
       } else {
         console.log('local')
         this.product = this.cart.find(i => i.itemId === itemId)
@@ -194,45 +186,68 @@ export class CartComponent implements OnInit {
         modalRef.componentInstance.company = company;
         modalRef.componentInstance.edit = true
         modalRef.componentInstance.itemId = itemId
-        // modalRef.result.then((value) => {
-        //   console.log(value)
-        //   console.log(this.product)
-        //   if (value == qty){
-        //     console.log('acerto mizeravi')
-        //   }
-        // },
-        //   (reason) => {
-        //     console.log('fechow')
-        //   })
       }
   }
 
   deleteItem(id: string) {
       if(this.loginService.isAuth()){
-      this.service.deleteProduct(id).subscribe({
-        next: response => {
-          console.log(response)
-          if (this.cart.length == 1) {
-            this.close()
-            this.empty = true
-            this.total = 0
-          }
-          this.retrieveProductsOnCart(true)
-        },
-        error: err => {
-          if (err.status == 200) {
-            console.log('Removido do carrinho')
-            if (this.cart.length == 1) {
-              this.close()
-              this.empty = true
+        // if(this.unifiedProducts){
+        //   let product = this.cart.filter(p => p.itemId == id).pop()
+        //   let filtered = this.responseCart.filter(i => i.productId == product.productId)
+        //     for(let i = 0; i < filtered.length; i++){
+        //     this.service.deleteProduct(filtered[i].itemId).subscribe({
+        //       next: response => {
+        //         this.cart.splice(this.cart.findIndex(c=> c.productId == product.id))
+        //         console.log(response)
+        //         if (i == filtered.length-1 && this.cart.length < 1) {
+        //           this.close()
+        //           this.empty = true
+        //           this.total = 0
+        //         }
+        //         this.retrieveProductsOnCart(true)
+        //       },
+        //       error: err => {
+        //         if (err.status == 200) {
+        //           console.log('Removido do carrinho')
+        //           if (i == filtered.length-1) {
+        //             this.close()
+        //             this.empty = true
+        //           }
+        //           this.retrieveProductsOnCart()
+        //         } else {
+        //           console.log('Erro desconhecido')
+        //           // this.cart = []
+        //         }
+        //       }
+        //     })
+        //   }
+        //   console.log(product);
+        //   console.log(filtered);
+        // } else {
+          this.service.deleteProduct(id).subscribe({
+            next: response => {
+              console.log(response)
+              if (this.cart.length == 1) {
+                this.close()
+                this.empty = true
+                this.total = 0
+              }
+              this.retrieveProductsOnCart(true)
+            },
+            error: err => {
+              if (err.status == 200) {
+                console.log('Removido do carrinho')
+                if (this.cart.length == 1) {
+                  this.close()
+                  this.empty = true
+                }
+                this.retrieveProductsOnCart()
+              } else {
+                console.log('Erro desconhecido')
+              }
             }
-            this.retrieveProductsOnCart()
-          } else {
-            console.log('Erro desconhecido')
-            // this.cart = []
-          }
-        }
-      })
+          })
+        // }
     } else {
       console.log('carrinho localstorage')
       console.log(this.cart)
@@ -253,18 +268,42 @@ export class CartComponent implements OnInit {
   addCoupon(form: NgForm) {
     console.log(form.value.code)
     console.log(this.code)
-    if (form.value.code.toUpperCase() == 'MENOS10') {
-      this.couponDiscount = 10;
-      this.code = 'R$10 para todas as Lojas'
-      this.closeEvent.emit({ 'show': 'show', 'total': this.total + +this.deliveryFee - this.couponDiscount })
-    } else if (form.value.code.toUpperCase() == 'PRIMEIRACOMPRA') {
-      this.couponDiscount = 25;
-      this.code = 'R$25 para o Primeiro Pedido'
-      this.closeEvent.emit({ 'show': 'show', 'total': this.total + +this.deliveryFee - this.couponDiscount })
+    this.usedCoupon = form.value.code.toUpperCase()
+    if (form.value.code.toUpperCase() == 'MENOS10' && localStorage.getItem('usedCoupon')?.includes('MENOS10')) {
+      if(this.total < 20) {
+        this.invalidCoupon = true
+        this.invalidMessage = 'Cupom válido para pedido mínimo de R$ 20'
+        setTimeout(() => {
+          setTimeout(() => this.invalidCoupon = false, 2500)
+        }, 100);
+      } else {
+        this.couponDiscount = 10;
+        this.code = 'R$10 para todas as Lojas'
+        this.closeEvent.emit({ 'show': 'show', 'total': this.total + +this.deliveryFee - this.couponDiscount })
+      }
+    } else if (form.value.code.toUpperCase() == 'PRIMEIRACOMPRA' && !localStorage.getItem('usedCoupon')?.includes('PRIMEIRACOMPRA')) {
+      if(this.total < 50) {
+        this.invalidCoupon = true
+        this.invalidMessage = 'Cupom válido para pedido mínimo de R$ 50'
+        setTimeout(() => {
+          setTimeout(() => this.invalidCoupon = false, 2500)
+        }, 100);
+      } else {
+        this.couponDiscount = 25;
+        this.code = 'R$25 para o Primeiro Pedido'
+        this.closeEvent.emit({ 'show': 'show', 'total': this.total + +this.deliveryFee - this.couponDiscount })
+      }
+    } else {
+      this.invalidCoupon = true
+      this.invalidMessage = 'Cupom inválido !'
+      setTimeout(() => {
+        setTimeout(() => this.invalidCoupon = false, 2500)
+      }, 100);
     }
   }
 
   removeCoupon() {
+    this.usedCoupon = '';
     this.couponDiscount = 0;
     this.code = ''
     this.closeEvent.emit({ 'show': 'show', 'total': this.total + +this.deliveryFee - this.couponDiscount })
@@ -274,16 +313,19 @@ export class CartComponent implements OnInit {
     this.show = ''
     this.closeEvent.emit({ 'show': 'show', 'total': this.total + +this.deliveryFee - this.couponDiscount })
     document.getElementsByTagName('html')[0].style.overflowY = 'scroll'
-    // if (this.empty)
-    //   this.ngOnInit()
   }
 
   confirmOrder() {
+    this.showLoader()
     this.service.confirmOrder(localStorage.getItem('userId')!).subscribe({
       next: response => {
         console.log(response)
-        alert('Pedido realizado com sucesso')
-        window.location.pathname = 'pedidos'
+        if(localStorage.getItem('usedCoupons') == localStorage.getItem('userId') && this.usedCoupon)
+        localStorage.setItem('usedCoupons', localStorage.getItem('userId') + this.usedCoupon)
+        setTimeout(() => {
+          alert('Pedido realizado com sucesso')
+          window.location.pathname = 'pedidos'
+        },1000)
       },
       error: err => {
         console.log(err)
@@ -299,5 +341,13 @@ export class CartComponent implements OnInit {
     let location = new Address();
     const modalRef = this.modalService.open(FormContent, {size: 'lg'})
     modalRef.componentInstance.location = location
+  }
+
+  showLoader(){
+    const spinners = document.querySelectorAll('.spinner-grow')
+    document.querySelector('.confirm')?.classList.add('d-none')
+    setTimeout(() => spinners[0].classList.remove('d-none'))
+    setTimeout(() => spinners[1].classList.remove('d-none'), 50)
+    setTimeout(() => spinners[2].classList.remove('d-none'), 100)
   }
 }

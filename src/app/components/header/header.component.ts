@@ -95,6 +95,8 @@ export class HeaderComponent implements OnInit {
       next: response => {
         console.log(response)
         localStorage.setItem('userId', response.id)
+        if(!localStorage.getItem('usedCoupons'))
+        localStorage.setItem('usedCoupons', response.id)
         this.logged = true;
         if(response.address.length == 0) {
           localStorage.removeItem('hasAddress')

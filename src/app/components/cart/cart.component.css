@@ -77,3 +77,10 @@ button{
 .removeCoupon{
     margin-left: 8px;
 }
+
+.spinner-grow{
+    width: 18px;
+    height: 18px;
+    margin-left: 9px;
+    margin-right: 9px;
+}

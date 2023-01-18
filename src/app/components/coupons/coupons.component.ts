@@ -18,8 +18,15 @@ export class CouponsComponent implements OnInit {
 
   ngOnInit(): void {
     this.userAuth = this.loginService.isAuth()
-    if(this.userAuth)
-    this.coupons = this.service.getCoupons();
+    if(this.userAuth){
+      this.coupons = this.service.getCoupons();
+      if(localStorage.getItem('usedCoupons')?.includes(localStorage.getItem('userId')!))
+      if(localStorage.getItem('usedCoupons')?.includes('MENOS10')){
+        this.coupons = this.coupons.filter(c => c.code != 'MENOS10')
+      } else if (localStorage.getItem('usedCoupons')?.includes('PRIMEIRACOMPRA')){
+        this.coupons = this.coupons.filter(c => c.code != 'PRIMEIRACOMPRA')
+      }
+    }
   }
 
   copy(id:string){
